@@ -40,9 +40,30 @@ void Insert(PolynomialList *lst, int variable, int pow)
 		{
 			if ((plm->variable + iter->variable) == 0)
 			{
-				(iter->prev)->next = iter->next;	
-				(iter->next)->prev = iter->prev;
-				free(iter);
+				if (!(iter->prev))//head
+				{
+					Polynomial *temp = lst->head;
+					iter = lst->head = iter->next;
+					iter->prev = NULL;
+					free(temp);
+				}
+				
+				else if (!(iter->next))//tail
+				{
+					Polynomial *temp = lst->tail;
+					iter = lst->tail = iter->prev;
+					iter->next = NULL;
+					free(temp);
+					return;
+				}
+
+				else
+				{
+					(iter->prev)->next = iter->next;
+					(iter->next)->prev = iter->prev;
+					free(iter);
+				}
+
 				return;
 			}
 
@@ -75,58 +96,45 @@ void Insert(PolynomialList *lst, int variable, int pow)
 
 PolynomialList *Sum(PolynomialList *p1, PolynomialList *p2)
 {
+	PolynomialList *lst = InitPolynomialList();
 	Polynomial *iter1 = p1->head;
 	Polynomial *iter2 = p2->head;
 
-	if (iter1->pow > iter2->pow)
-	{
-		Insert(p1, iter2->variable, iter2->pow);
-		return;
-	}
-
 	while (iter1)
 	{
-		if (iter1->pow == iter2->pow)
-		{
-			iter1->variable += iter2->variable;
-			return;
-		}
-		
-		if (!iter1)
-		{
-			Insert(p1, iter2->variable, iter2->pow);
-		}
-
+		Insert(lst, iter1->variable, iter1->pow);
 		iter1 = iter1->next;
 	}
+
+	while (iter2)
+	{
+		Insert(lst, iter2->variable, iter2->pow);
+		iter2 = iter2->next;
+	}
+		
+	return lst;
 }
 
 
 PolynomialList *Diff(PolynomialList *p1, PolynomialList *p2)
 {
+	PolynomialList *lst = InitPolynomialList();
 	Polynomial *iter1 = p1->head;
 	Polynomial *iter2 = p2->head;
 
-	if (iter1->pow > iter2->pow)
+	while (iter1)
 	{
-		iter2->variable = 0 - iter2->variable;
-		Insert(p1, iter2->variable, iter2->pow);
-		return;
-	}
-
-	while (iter1->next)
-	{
-		if (iter1->pow == iter2->pow)
-		{
-			iter1->variable -= iter2->variable;
-			return;
-		}
-
+		Insert(lst, iter1->variable, iter1->pow);
 		iter1 = iter1->next;
 	}
-	
-	iter2->variable = 0 - iter2->variable;
-	Insert(p1, iter2->variable, iter2->pow);
+
+	while (iter2)
+	{
+		Insert(lst, -(iter2->variable), iter2->pow);
+		iter2 = iter2->next;
+	}
+
+	return lst;
 }
 
 PolynomialList *Multiple(PolynomialList *lst, int scalar)
