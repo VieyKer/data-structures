@@ -5,7 +5,7 @@
 void Ex_2();
 
 void main()
-{
+ 
 	PolynomialList *lst1 = InitPolynomialList();
 	Insert(lst1, 4, 2,0);
 	Insert(lst1, 6, 4,0);
