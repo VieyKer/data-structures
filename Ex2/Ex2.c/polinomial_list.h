@@ -23,4 +23,6 @@ PolynomialList *Diff(PolynomialList *lst1, PolynomialList *lst2);
 
 PolynomialList *Multiple(PolynomialList *lst, int scalar);
 
+PolynomialList *emptyPol(PolynomialList *list);
+
 void PrintPolList(PolynomialList *lst);
