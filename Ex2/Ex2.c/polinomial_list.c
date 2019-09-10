@@ -147,6 +147,7 @@ PolynomialList *Multiple(PolynomialList *lst, int scalar)
 	while (iter)
 	{
 		iter->variable = (iter->variable)*scalar;
+		iter = iter->next;
 	}
 
 	return lst;
@@ -165,10 +166,10 @@ void PrintPolList(PolynomialList *lst)
 
 		while (iter)
 		{
-			printf("%dx^%d", iter->variable, iter->pow);
+			printf("(%d)x^%d", iter->variable, iter->pow);
 			if (iter->next)
 			{
-				printf("+");
+				printf(" + ");
 			}
 
 			iter = iter->next;
@@ -176,4 +177,32 @@ void PrintPolList(PolynomialList *lst)
 
 		printf("\n");
 	}
+}
+
+PolynomialList *emptyPol(PolynomialList *list)
+{
+	Polynomial *head = list->head;
+	
+	if (head == NULL)
+	{
+		return list;
+	}
+	Polynomial *ptr = list->head->next;
+	Polynomial *temp = (Polynomial*)malloc(sizeof(Polynomial));
+	if (temp == NULL)
+	{
+		printf("Alloc failed\n");
+		return list;
+	}
+	
+	while (ptr)
+	{
+		temp = ptr;
+		ptr = ptr->next;
+		free(temp);
+	}
+
+	head = InitPolynomialList();
+	head->pow = head->variable = 0;
+	return head;
 }
