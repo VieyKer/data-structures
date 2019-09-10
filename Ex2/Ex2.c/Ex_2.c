@@ -25,6 +25,7 @@ void main()
 	//PolynomialList *lst3 = Sum(lst1, lst2);
 	PolynomialList *lst3 = Diff(lst1, lst2);
 	//PolynomialList *lst3 = Multiple(lst3, 3);
+	//PolynomialList *lst3 = emptyPol(lst2);
 	PrintPolList(lst3);
 	system("PAUSE");
 }
